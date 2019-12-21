@@ -12,11 +12,11 @@ export default {
     *login({ payload }, { put, call, select }) {
       const data = yield call(loginUser, payload)
       const { locationQuery } = yield select(_ => _.app)
-      if (data.success) {
+      if (data.token) {
         const { from } = locationQuery
         yield put({ type: 'app/query' })
         if (!pathMatchRegexp('/login', from)) {
-          if (['', '/'].includes(from)) router.push('/dashboard')
+          if (!from || ['', '/'].includes(from)) router.push('/dashboard')
           else router.push(from)
         } else {
           router.push('/dashboard')
@@ -24,6 +24,9 @@ export default {
       } else {
         throw data
       }
+    },
+    *redirect({ payload }, { put, call, select }) {
+      router.push('/register')
     },
   },
 }

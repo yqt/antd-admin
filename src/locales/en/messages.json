@@ -48,7 +48,16 @@
   "Update": "Update",
   "Update User": "Update User",
   "Username": "Username",
+  "E-mail": "E-mail",
   "Views": "Views",
   "Visibility": "Visibility",
-  "You have viewed all notifications.": "You have viewed all notifications."
+  "You have viewed all notifications.": "You have viewed all notifications.",
+  "Register": "Register",
+  "Enter password again": "Enter password again",
+  "Password not the same": "Password not the same",
+  "ReCaptcha hl": "en",
+  "Register success": "Register success",
+  "Redirect to login page in {secondsToGo} seconds.": "Redirect to login page in {secondsToGo} seconds.",
+  "Already registered?": "Already registered?",
+  "Don't Have an Account?": "Don't Have an Account?"
 }

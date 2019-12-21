@@ -48,7 +48,16 @@
   "Update": "更新",
   "Update User": "更新用户",
   "Username": "用户名",
+  "E-mail": "邮箱",
   "Views": "浏览数",
   "Visibility": "可见性",
-  "You have viewed all notifications.": "您已查看所有通知"
+  "You have viewed all notifications.": "您已查看所有通知",
+  "Register": "注册",
+  "Enter password again": "再次输入密码",
+  "Password not the same": "密码不一致",
+  "ReCaptcha hl": "zh-CN",
+  "Register success": "注册成功",
+  "Redirect to login page in {secondsToGo} seconds.": "将在{secondsToGo}秒后前往登陆页面",
+  "Already registered?": "已注册？",
+  "Don't Have an Account?": "没有账号？"
 }

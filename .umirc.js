@@ -76,6 +76,26 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^/api/v1/weather': '/v3/weather' },
     },
+    '/api/v1/user': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+      pathRewrite: { '^/api/v1/user': '/user' },
+    },
+    '/api/v1/login': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+      pathRewrite: { '^/api/v1/login': '/login' },
+    },
+    '/api/v1/register': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+      pathRewrite: { '^/api/v1/register': '/register' },
+    },
+    '/api/v1/logout': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+      pathRewrite: { '^/api/v1/logout': '/logout' },
+    },
   },
   alias: {
     api: resolve(__dirname, './src/services/'),
@@ -99,4 +119,6 @@ export default {
       'lodash',
     ],
   ],
+  devtool: 'inline-source-map',
+  //history: 'hash',
 }

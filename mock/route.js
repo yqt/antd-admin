@@ -32,7 +32,7 @@ const database = [
     breadcrumbParentId: '1',
     name: 'Posts',
     zh: {
-      name: '用户管理'
+      name: '文章管理'
     },
     'pt-br': {
       name: 'Posts'

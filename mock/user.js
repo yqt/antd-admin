@@ -91,7 +91,7 @@ const NOTFOUND = {
 }
 
 module.exports = {
-  [`POST ${ApiPrefix}/user/login`](req, res) {
+  /*[`POST ${ApiPrefix}/user/login`](req, res) {
     const { username, password } = req.body
     const user = adminUsers.filter(item => item.username === username)
 
@@ -110,14 +110,14 @@ module.exports = {
     } else {
       res.status(400).end()
     }
-  },
+  },*/
 
-  [`GET ${ApiPrefix}/user/logout`](req, res) {
+  /*[`GET ${ApiPrefix}/user/logout`](req, res) {
     res.clearCookie('token')
     res.status(200).end()
-  },
+  },*/
 
-  [`GET ${ApiPrefix}/user`](req, res) {
+  /*[`GET ${ApiPrefix}/user`](req, res) {
     const cookie = req.headers.cookie || ''
     const cookies = qs.parse(cookie.replace(/\s/g, ''), { delimiter: ';' })
     const response = {}
@@ -139,7 +139,7 @@ module.exports = {
     }
     response.user = user
     res.json(response)
-  },
+  },*/
 
   [`GET ${ApiPrefix}/users`](req, res) {
     const { query } = req
@@ -187,7 +187,7 @@ module.exports = {
     res.status(204).end()
   },
 
-  [`POST ${ApiPrefix}/user`](req, res) {
+  /*[`POST ${ApiPrefix}/user`](req, res) {
     const newData = req.body
     newData.createTime = Mock.mock('@now')
     newData.avatar =
@@ -245,5 +245,5 @@ module.exports = {
     } else {
       res.status(200).json(NOTFOUND)
     }
-  },
+  },*/
 }

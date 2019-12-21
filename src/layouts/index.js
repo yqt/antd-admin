@@ -5,14 +5,13 @@ import { I18nProvider } from '@lingui/react'
 import { langFromPath, defaultLanguage } from 'utils'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import en_US from 'antd/lib/locale-provider/en_US'
-import pt_BR from 'antd/lib/locale-provider/pt_BR'
+import loadReCaptcha from 'utils/loadReCaptcha'
 
 import BaseLayout from './BaseLayout'
 
 const languages = {
   zh: zh_CN,
   en: en_US,
-  'pt-br': pt_BR,
 }
 
 @withRouter
@@ -27,6 +26,8 @@ class Layout extends Component {
     const language = langFromPath(this.props.location.pathname)
     this.language = language
     language && this.loadCatalog(language)
+
+    loadReCaptcha()
   }
 
   shouldComponentUpdate(nextProps, nextState) {

@@ -1,24 +1,47 @@
 import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'dva'
-import { Button, Row, Form, Icon, Input } from 'antd'
+import { Button, Row, Form, Icon, Input, Modal } from 'antd'
 import { GlobalFooter } from 'ant-design-pro'
 import { Trans, withI18n } from '@lingui/react'
 import { ReCaptcha } from 'react-recaptcha-google'
 import { setLocale } from 'utils'
 import config from 'utils/config'
 
-import styles from './index.less'
+import styles from './register.less'
 const FormItem = Form.Item
 
 @withI18n()
 @connect(({ loading }) => ({ loading }))
 @Form.create()
-class Login extends PureComponent {
+class Register extends PureComponent {
   constructor(props, context) {
     super(props, context)
     this.onLoadRecaptcha = this.onLoadRecaptcha.bind(this)
     this.verifyCallback = this.verifyCallback.bind(this)
+  }
+
+  countDown = () => {
+    const { dispatch, i18n } = this.props
+    let secondsToGo = 3
+    const modal = Modal.success({
+      title: i18n.t`Register success`,
+      content: i18n.t`Redirect to login page in ${secondsToGo} seconds.`,
+    })
+    const timer = setInterval(() => {
+      secondsToGo -= 1
+      modal.update({
+        content: i18n.t`Redirect to login page in ${secondsToGo} seconds.`,
+      })
+    }, 1000)
+    setTimeout(() => {
+      clearInterval(timer)
+      modal.destroy()
+      dispatch({
+        type: 'register/registerSuccess',
+        payload: {},
+      })
+    }, secondsToGo * 1000)
   }
 
   handleOk = () => {
@@ -28,14 +51,42 @@ class Login extends PureComponent {
       if (errors) {
         return
       }
-      dispatch({ type: 'login/login', payload: values })
+      dispatch({
+        type: 'register/register',
+        payload: values,
+      }).then(success => {
+        console.log(success)
+        if (success) {
+          this.countDown()
+        }
+      })
     })
+  }
+
+  handleCheckPassword = (rule, value, callback) => {
+    const { form, i18n } = this.props
+    const password = form.getFieldValue('confirmPassword')
+    if (password && password != value) {
+      callback(i18n.t`Password not the same`)
+    } else {
+      callback()
+    }
+  }
+
+  handleCheckConfirmPassword = (rule, value, callback) => {
+    const { form, i18n } = this.props
+    const password = form.getFieldValue('password')
+    if (password && password != value) {
+      callback(i18n.t`Password not the same`)
+    } else {
+      callback()
+    }
   }
 
   handleRedirect = () => {
     const { dispatch } = this.props
     dispatch({
-      type: 'login/redirect',
+      type: 'register/redirect',
       payload: {},
     })
   }
@@ -108,7 +159,7 @@ class Login extends PureComponent {
               )}
             </FormItem>
             <FormItem hasFeedback>
-              {getFieldDecorator('password', {
+              {getFieldDecorator('username', {
                 rules: [
                   {
                     required: true,
@@ -116,9 +167,44 @@ class Login extends PureComponent {
                 ],
               })(
                 <Input
+                  onPressEnter={this.handleOk}
+                  placeholder={i18n.t`Username`}
+                />
+              )}
+            </FormItem>
+            <FormItem hasFeedback>
+              {getFieldDecorator('password', {
+                rules: [
+                  {
+                    required: true,
+                  },
+                  {
+                    validator: this.handleCheckConfirmPassword,
+                  },
+                ],
+              })(
+                <Input
                   type="password"
                   onPressEnter={this.handleOk}
                   placeholder={i18n.t`Password`}
+                />
+              )}
+            </FormItem>
+            <FormItem hasFeedback>
+              {getFieldDecorator('confirmPassword', {
+                rules: [
+                  {
+                    required: true,
+                  },
+                  {
+                    validator: this.handleCheckConfirmPassword,
+                  },
+                ],
+              })(
+                <Input
+                  type="password"
+                  onPressEnter={this.handleOk}
+                  placeholder={i18n.t`Enter password again`}
                 />
               )}
             </FormItem>
@@ -159,13 +245,13 @@ class Login extends PureComponent {
                 onClick={this.handleOk}
                 loading={loading.effects.login}
               >
-                <Trans>Sign in</Trans>
+                <Trans>Register</Trans>
               </Button>
               <p>
                 <span>
-                  <Trans>Don't Have an Account?</Trans>
+                  <Trans>Already registered?</Trans>
                   <a onClick={this.handleRedirect}>
-                    <Trans>Register</Trans>
+                    <Trans>Sign in</Trans>
                   </a>
                 </span>
               </p>
@@ -180,10 +266,10 @@ class Login extends PureComponent {
   }
 }
 
-Login.propTypes = {
+Register.propTypes = {
   form: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default Login
+export default Register

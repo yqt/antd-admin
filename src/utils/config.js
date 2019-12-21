@@ -10,7 +10,7 @@ module.exports = {
     {
       name: 'primary',
       include: [/.*/],
-      exclude: [/(\/(en|zh))*\/login/],
+      exclude: [/(\/(en|zh))*\/login/, /(\/(en|zh))*\/register/],
     },
   ],
 
@@ -18,11 +18,6 @@ module.exports = {
   i18n: {
     /* Countrys flags: https://www.flaticon.com/packs/countrys-flags */
     languages: [
-      {
-        key: 'pt-br',
-        title: 'Português',
-        flag: '/portugal.svg',
-      },
       {
         key: 'en',
         title: 'English',

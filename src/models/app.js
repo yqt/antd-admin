@@ -12,7 +12,7 @@ import config from 'config'
 const { queryRouteList, logoutUser, queryUserInfo } = api
 
 const goDashboard = () => {
-  if (pathMatchRegexp(['/', '/login'], window.location.pathname)) {
+  if (pathMatchRegexp(['/', '/login', '/register'], window.location.pathname)) {
     router.push({
       pathname: '/dashboard',
     })
@@ -48,7 +48,13 @@ export default {
   },
   subscriptions: {
     setup({ dispatch }) {
-      dispatch({ type: 'query' })
+      dispatch({
+        type: 'query',
+        payload: {
+          locationPathname: window.location.pathname,
+          locationQuery: window.location.query,
+        },
+      })
     },
     setupHistory({ dispatch, history }) {
       history.listen(location => {
@@ -83,7 +89,20 @@ export default {
         goDashboard()
         return
       }
-      const { locationPathname } = yield select(_ => _.app)
+      let { locationPathname } = yield select(_ => _.app)
+      if (!locationPathname && payload) {
+        locationPathname = payload['locationPathname']
+      }
+      if (queryLayout(config.layouts, locationPathname) !== 'public') {
+        router.push({
+          pathname: '/login',
+          search: stringify({
+            from: locationPathname,
+          }),
+        })
+      } else {
+        return
+      }
       const { success, user } = yield call(queryUserInfo, payload)
       if (success && user) {
         const { list } = yield call(queryRouteList)
@@ -111,13 +130,6 @@ export default {
         store.set('user', user)
         store.set('isInit', true)
         goDashboard()
-      } else if (queryLayout(config.layouts, locationPathname) !== 'public') {
-        router.push({
-          pathname: '/login',
-          search: stringify({
-            from: locationPathname,
-          }),
-        })
       }
     },
 

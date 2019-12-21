@@ -34,7 +34,9 @@ export default function request(options) {
   }
 
   options.url = url
-  options.params = cloneData
+  if (method == 'get') {
+    options.params = cloneData
+  }
   options.cancelToken = new CancelToken(cancel => {
     window.cancelRequest.set(Symbol(Date.now()), {
       pathname: window.location.pathname,
@@ -82,6 +84,12 @@ export default function request(options) {
       } else {
         statusCode = 600
         msg = error.message || 'Network Error'
+      }
+
+      if (statusCode == 401) {
+        return {
+          success: false,
+        }
       }
 
       /* eslint-disable */
